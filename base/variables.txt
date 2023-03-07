@@ -1,0 +1,96 @@
+All units in SI!
+
+!integer
+No = Number of events
+i = general counter of evetns (first loop layer)
+j = specific counter of events (second loop layer)
+i0 = event that causes initial incision
+test_depth2 = auxiliar variable to test if depth > nel
+
+!logical
+test_depth1 = auxiliar variable to test if depth > nel
+
+!real - general variables
+Q(i) = peak discharge (m3/s) > assumed equal to the I30 of the rainfall event - vector
+q = event peak discharge (m3/s)
+t = event duration - fixed at 30 minutes > t = 1800. (Alencar et al, 2019 - HESS)
+n = Maner coefficient > see data in Chow (1959) - Table5-6 page 110
+S = Slope in m/m
+Kr = Rill erodibility (s/m) > see equation from WEPP model (Flanagan 1995) and Alberts 1989
+tauC = Critical shear stress (Pa) > see equation from WEPP model (Flanagan 1995) and Alberts 1989
+rhoB = Bulk density (kg/m3)
+rhoW = Density of water (1000 kg/m3)
+g = gravity acceleration > g = 9.7804 m/s2 > from WGS84 model - g = g45 - 0.5(g90-g0)*cos(2*Lat) [g0 = 9.780; g45 = 9.806; g90 = 9.832; Lat = 5º]
+Gw = Specific weight of water > Da*g
+NEL = depth of the Non-Erodible Layer (m) > obtained from measurements
+ch = soil cohesion (Pa)
+phi = internal friction angle (in degrees)
+pi = 3.1415926536
+
+!real - event's variables
+par1 = flow parameter = (n Q/S^0.5)^0.375
+tauA = event's average shear stress (Pa) - used on the first incision, in the watson equations
+w0 = width of initial incision (in meters -- watson equations)
+Mr = downward movement rate (m.s-1)
+width = channel width (m)
+depth = channel depth (m)
+area = channel area (m2)
+flow_w = flow width (m)
+flow_d = flow depth (m)
+w_step, b_step = length of the resolution for the calculation of shear stress; by defaut, the section is divided in 80 points.
+dt_w, dt_b = shear stress distributions (vector)
+Dr_w, Dr_b = detachment rate (vectors)
+da_w, da_b = total displaced area (eroded area) due to the detachement rate. 
+new_area, new_depth, new_width = geometric properties of the altered (eroded) section. Equations keep rectangular geometry.
+
+
+!variables in subroutine *shear_const*
+flow_a = flow area (m2)
+flow_p = flow wet perimeter (m)
+Rh = hydraulic radius (m)
+T0 = hydraulic average shear stress = g*rhoW*S*Rh (Pa)
+Lb = bed length (m)
+Lw = wall lengh (m)
+Lr = Length ratio (-)
+Cfs, SFw = auxiliar variables (Knight 2000)
+Tw_a = average shear stress on the wall (Pa)
+Tb_a = average shear stress on the bed (Pa)
+Tw_m = max shear stress on the wall (Pa)
+Tb_m = max shear stress on the bed (Pa)
+
+!variables in subroutine *calib_lbd*
+Tr_b = shear stress ratio a/m for the bed
+Tr_w = shear stress ratio a/m for the wall
+erro_s1m, erro_s1w, erro_s1b = errors test and max
+cont1w, cont1b = counters
+xs1, xs1_n = variable (lbd1)
+fp, dfp = calibration equations (from pomce)
+lbd1_w, lbd1_b = auxiliar lbds
+lbd_w, lbd_b = calibrated lambdas
+
+!variables in subroutine *dist_shear*
+points = number of points on the wall and (half-) bed where the shear stress will be calculated
+erro_s2m, erro_s2w, erro_s2b = errors test and max
+kw, kb = position control
+x_w, x_b, x_new, gy, fx, dfx
+T_w, T_b = auxiliar (intern) vectors
+tau_w, tau_b = vectors of shear stress (length by defaut = 21; extern) 
+
+!variables in subroutine *Newton_PHI*
+i = counter
+k1, k2 = auxiliars
+x, xa, f1, df1 = newton variables and functions
+Ang = anglw of stability
+
+
+
+!auxiliars
+a1, b1, lower =  in funcion *lower*
+a2, b2, flow_depth2, erro2, erro_M2, f2, df2, x2, xn2 = in function *flow_depth*
+
+
+!common variables
+common /ShearConst/ flow_w, flow_d, S, Gw, Tw_a, Tb_a, Tw_m, Tb_m
+common /CalibLbd/ Tw_a, Tb_a, Tw_m, Tb_m, lbd_w, lbd_b
+common /DistShear/ lbd_w, lbd_b, Tw_m, Tb_m, tau_w, tau_b
+

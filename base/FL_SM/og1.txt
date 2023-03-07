@@ -1,0 +1,8 @@
+ Fase1           1   3.27273086E-02  0.100000001       3.27273086E-02   3.27273086E-03
+ Fase2           1   7.55099803E-02  0.100000001       2.27489538E-04
+ Fase2           2   7.55099803E-02  0.100000001       2.26693286E-04
+ Fase2           3   7.55099803E-02  0.100000001       2.26651769E-04
+ The cross section area is:    7.55099813E-03  m2
+ The depth is:   0.100000001     m
+  
+ The erosion reached the non erodible layer.
